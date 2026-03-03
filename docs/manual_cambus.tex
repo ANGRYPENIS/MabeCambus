@@ -1,0 +1,854 @@
+% ============================================================================
+% CamBus - Manual de Usuario y Documentación Técnica
+% Centro de Distribución Mabe SLP
+% ============================================================================
+% Documento LaTeX para Overleaf
+% ============================================================================
+
+\documentclass[12pt,a4paper]{article}
+
+% ============================================================================
+% PAQUETES
+% ============================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{awesomebox}
+\usepackage{fontawesome5}
+
+% ============================================================================
+% CONFIGURACIÓN DE PÁGINA
+% ============================================================================
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm
+}
+
+% Colores corporativos
+\definecolor{mabe-blue}{RGB}{31, 119, 180}
+\definecolor{mabe-dark}{RGB}{38, 39, 48}
+\definecolor{code-bg}{RGB}{240, 242, 246}
+\definecolor{success}{RGB}{40, 167, 69}
+\definecolor{warning}{RGB}{255, 193, 7}
+\definecolor{danger}{RGB}{220, 53, 69}
+
+% Configuración de hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=mabe-blue,
+    filecolor=mabe-blue,
+    urlcolor=mabe-blue,
+    citecolor=mabe-blue,
+    pdftitle={CamBus - Manual de Usuario},
+    pdfauthor={CamBus Team},
+    pdfsubject={Documentación del Sistema CamBus}
+}
+
+% Configuración de listings para código
+\lstset{
+    backgroundcolor=\color{code-bg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{gray},
+    frame=single,
+    keepspaces=true,
+    keywordstyle=\color{mabe-blue}\bfseries,
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\tiny\color{gray},
+    rulecolor=\color{black},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    stringstyle=\color{success},
+    tabsize=4,
+    xleftmargin=1cm
+}
+
+% Estilos de código específicos
+\lstdefinestyle{bash}{
+    language=bash,
+    morekeywords={sudo, apt, pacman, pip, docker, streamlit}
+}
+
+\lstdefinestyle{yaml}{
+    basicstyle=\ttfamily\small,
+    morecomment=[l]{\#}
+}
+
+% Configuración de encabezados
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\includegraphics[height=0.8cm]{example-image}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Formato de secciones
+\titleformat{\section}
+    {\normalfont\Large\bfseries\color{mabe-blue}}
+    {\thesection}{1em}{}
+\titleformat{\subsection}
+    {\normalfont\large\bfseries\color{mabe-dark}}
+    {\thesubsection}{1em}{}
+
+% ============================================================================
+% DOCUMENTO
+% ============================================================================
+
+\begin{document}
+
+% ============================================================================
+% PORTADA
+% ============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries\color{mabe-blue} CamBus}\\[0.5cm]
+    {\LARGE Control de Acceso Vehicular}\\[1cm]
+    
+    \rule{\textwidth}{0.5pt}\\[0.5cm]
+    {\Large\bfseries Manual de Usuario y Documentación Técnica}\\[0.3cm]
+    \rule{\textwidth}{0.5pt}\\[2cm]
+    
+    {\large Centro de Distribución Mabe SLP}\\[3cm]
+    
+    \begin{tikzpicture}
+        \node[draw=mabe-blue, line width=2pt, rounded corners=10pt, inner sep=20pt, fill=code-bg] {
+            \Large\faIcon{truck} \quad Sistema de Gestión de Andenes
+        };
+    \end{tikzpicture}
+    
+    \vfill
+    
+    {\large Versión 1.0.0}\\[0.5cm]
+    {\large Febrero 2026}
+    
+\end{titlepage}
+
+% ============================================================================
+% ÍNDICE
+% ============================================================================
+\tableofcontents
+\newpage
+
+% ============================================================================
+% 1. INTRODUCCIÓN
+% ============================================================================
+\section{Introducción}
+
+\subsection{Descripción del Sistema}
+
+\textbf{CamBus} es una aplicación web desarrollada con Streamlit que permite la gestión integral de entrada y salida de vehículos en el Centro de Distribución Mabe SLP. El sistema está diseñado para controlar y monitorear 100 andenes de carga/descarga en tiempo real.
+
+\subsection{Características Principales}
+
+\begin{itemize}[leftmargin=2cm]
+    \item[\faIcon{tachometer-alt}] \textbf{Dashboard en Tiempo Real}: Visualización del estado de 100 andenes con actualización automática cada 5 segundos
+    \item[\faIcon{clipboard-list}] \textbf{Registro Manual}: Entrada y salida de vehículos de forma manual
+    \item[\faIcon{chart-bar}] \textbf{Reportes y Análisis}: Flujo por hora, eficiencia de andenes, tiempos de permanencia
+    \item[\faIcon{cogs}] \textbf{Administración}: Gestión de usuarios, andenes, cámaras y backups
+\end{itemize}
+
+\subsection{Requisitos del Sistema}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Componente} & \textbf{Versión Mínima} \\
+        \hline
+        Python & 3.9+ \\
+        PostgreSQL & 12+ \\
+        Docker (opcional) & 20.10+ \\
+        \hline
+    \end{tabular}
+    \caption{Requisitos mínimos del sistema}
+\end{table}
+
+% ============================================================================
+% 2. INSTALACIÓN
+% ============================================================================
+\section{Instalación}
+
+\subsection{Instalación en Linux - Distribución Debian/Ubuntu}
+
+\subsubsection{Paso 1: Actualizar el Sistema}
+
+\begin{lstlisting}[style=bash]
+sudo apt update && sudo apt upgrade -y
+\end{lstlisting}
+
+\subsubsection{Paso 2: Instalar Dependencias del Sistema}
+
+\begin{lstlisting}[style=bash]
+# Instalar Python y pip
+sudo apt install -y python3 python3-pip python3-venv
+
+# Instalar PostgreSQL
+sudo apt install -y postgresql postgresql-contrib
+
+# Instalar dependencias adicionales
+sudo apt install -y build-essential libpq-dev git curl
+\end{lstlisting}
+
+\subsubsection{Paso 3: Configurar PostgreSQL}
+
+\begin{lstlisting}[style=bash]
+# Iniciar el servicio de PostgreSQL
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+# Crear base de datos y usuario
+sudo -u postgres psql -c "CREATE DATABASE cambus_db;"
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'tu_password';"
+
+# Cargar el esquema de la base de datos
+sudo -u postgres psql -d cambus_db -f cambus.sql
+\end{lstlisting}
+
+\subsubsection{Paso 4: Configurar la Aplicación}
+
+\begin{lstlisting}[style=bash]
+# Clonar o copiar el proyecto
+cd /ruta/al/proyecto/cambus
+
+# Crear entorno virtual
+python3 -m venv venv
+source venv/bin/activate
+
+# Instalar dependencias de Python
+pip install -r requirements.txt
+
+# Configurar variables de entorno
+cp .env.example .env
+nano .env  # Editar con tus credenciales
+\end{lstlisting}
+
+\subsubsection{Paso 5: Ejecutar la Aplicación}
+
+\begin{lstlisting}[style=bash]
+# Activar entorno virtual (si no está activo)
+source venv/bin/activate
+
+# Ejecutar la aplicación
+streamlit run app.py
+\end{lstlisting}
+
+La aplicación estará disponible en: \url{http://localhost:8501}
+
+\subsection{Instalación en Linux - Distribución Arch Linux}
+
+\subsubsection{Paso 1: Actualizar el Sistema}
+
+\begin{lstlisting}[style=bash]
+sudo pacman -Syu
+\end{lstlisting}
+
+\subsubsection{Paso 2: Instalar Dependencias del Sistema}
+
+\begin{lstlisting}[style=bash]
+# Instalar Python y pip
+sudo pacman -S python python-pip
+
+# Instalar PostgreSQL
+sudo pacman -S postgresql
+
+# Instalar dependencias adicionales
+sudo pacman -S base-devel git curl
+\end{lstlisting}
+
+\subsubsection{Paso 3: Configurar PostgreSQL}
+
+\begin{lstlisting}[style=bash]
+# Inicializar el cluster de PostgreSQL
+sudo -u postgres initdb -D /var/lib/postgres/data
+
+# Iniciar el servicio
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+# Crear base de datos
+sudo -u postgres createdb cambus_db
+
+# Establecer contraseña
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'tu_password';"
+
+# Cargar esquema
+sudo -u postgres psql -d cambus_db -f cambus.sql
+\end{lstlisting}
+
+\subsubsection{Paso 4: Configurar la Aplicación}
+
+\begin{lstlisting}[style=bash]
+# Navegar al proyecto
+cd /ruta/al/proyecto/cambus
+
+# Crear entorno virtual
+python -m venv venv
+source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Configurar variables de entorno
+cp .env.example .env
+vim .env  # Editar con tus credenciales
+\end{lstlisting}
+
+\subsubsection{Paso 5: Ejecutar la Aplicación}
+
+\begin{lstlisting}[style=bash]
+source venv/bin/activate
+streamlit run app.py
+\end{lstlisting}
+
+\subsection{Instalación en Windows}
+
+\subsubsection{Paso 1: Instalar Python}
+
+\begin{enumerate}
+    \item Descargar Python 3.11+ desde \url{https://www.python.org/downloads/}
+    \item Ejecutar el instalador
+    \item \textbf{Importante}: Marcar la opción ``Add Python to PATH''
+    \item Completar la instalación
+\end{enumerate}
+
+\subsubsection{Paso 2: Instalar PostgreSQL}
+
+\begin{enumerate}
+    \item Descargar PostgreSQL desde \url{https://www.postgresql.org/download/windows/}
+    \item Ejecutar el instalador
+    \item Configurar la contraseña del usuario \texttt{postgres}
+    \item Recordar el puerto (por defecto: 5432)
+\end{enumerate}
+
+\subsubsection{Paso 3: Crear la Base de Datos}
+
+Abrir \textbf{pgAdmin} o usar la línea de comandos:
+
+\begin{lstlisting}[style=bash]
+# Abrir PowerShell o CMD
+psql -U postgres
+
+# En el prompt de PostgreSQL
+CREATE DATABASE cambus_db;
+\q
+
+# Cargar el esquema
+psql -U postgres -d cambus_db -f cambus.sql
+\end{lstlisting}
+
+\subsubsection{Paso 4: Configurar la Aplicación}
+
+\begin{lstlisting}[style=bash]
+# Abrir PowerShell y navegar al proyecto
+cd C:\ruta\al\proyecto\cambus
+
+# Crear entorno virtual
+python -m venv venv
+.\venv\Scripts\activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Copiar y editar configuración
+copy .env.example .env
+notepad .env
+\end{lstlisting}
+
+\subsubsection{Paso 5: Ejecutar la Aplicación}
+
+\begin{lstlisting}[style=bash]
+# Activar entorno virtual
+.\venv\Scripts\activate
+
+# Ejecutar la aplicación
+streamlit run app.py
+\end{lstlisting}
+
+\subsection{Instalación con Docker (Todas las Plataformas)}
+
+Para una instalación simplificada usando contenedores:
+
+\begin{lstlisting}[style=bash]
+# Clonar el proyecto
+git clone <repositorio> cambus
+cd cambus
+
+# Configurar contraseña de base de datos
+export DB_PASSWORD=tu_password_seguro
+
+# Construir y ejecutar
+docker-compose up --build -d
+
+# Verificar que los contenedores están corriendo
+docker-compose ps
+\end{lstlisting}
+
+La aplicación estará disponible en:
+\begin{itemize}
+    \item \textbf{CamBus}: \url{http://localhost:8501}
+    \item \textbf{Adminer} (opcional): \url{http://localhost:8080}
+\end{itemize}
+
+% ============================================================================
+% 3. ESTRUCTURA DEL PROYECTO
+% ============================================================================
+\section{Estructura del Proyecto}
+
+\subsection{Árbol de Directorios}
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+cambus/
+|-- app.py                 # Aplicacion principal (punto de entrada)
+|-- config.yaml            # Configuracion de la aplicacion
+|-- requirements.txt       # Dependencias de Python
+|-- cambus.sql             # Esquema de base de datos PostgreSQL
+|-- Dockerfile             # Imagen Docker
+|-- docker-compose.yml     # Orquestacion de contenedores
+|-- .env.example           # Plantilla de variables de entorno
+|-- utils/
+|   |-- __init__.py
+|   |-- db.py              # Conexion y funciones de base de datos
+|   |-- auth.py            # Autenticacion y manejo de sesiones
+|-- components/
+|   |-- __init__.py
+|   |-- sidebar.py         # Barra lateral de navegacion
+|-- pages/
+|   |-- __init__.py
+|   |-- dashboard.py       # Dashboard principal con KPIs
+|   |-- registro.py        # Registro manual de vehiculos
+|   |-- reportes.py        # Reportes y analisis
+|   |-- admin.py           # Administracion del sistema
+\end{lstlisting}
+
+\subsection{Descripción de Componentes}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Archivo/Directorio} & \textbf{Descripción} \\
+        \hline
+        \texttt{app.py} & Punto de entrada principal. Configura la página, estilos CSS, y enruta a las diferentes páginas según la selección del usuario. \\
+        \hline
+        \texttt{config.yaml} & Archivo de configuración con parámetros de base de datos, dashboard, estados de andenes y roles de usuario. \\
+        \hline
+        \texttt{utils/db.py} & Módulo de conexión a PostgreSQL. Contiene todas las funciones de consulta y modificación de datos. \\
+        \hline
+        \texttt{utils/auth.py} & Sistema de autenticación. Maneja login, sesiones, hash de contraseñas (bcrypt) y control de permisos por rol. \\
+        \hline
+        \texttt{components/sidebar.py} & Componente de navegación lateral. Muestra menú según permisos del usuario autenticado. \\
+        \hline
+        \texttt{pages/dashboard.py} & Dashboard principal con KPIs, mapa de andenes en grid 10x10, y lista de vehículos activos. \\
+        \hline
+        \texttt{pages/registro.py} & Formularios para registrar entrada y salida manual de vehículos. Validación de placas mexicanas. \\
+        \hline
+        \texttt{pages/reportes.py} & Generación de reportes: flujo horario, eficiencia de andenes, tiempos de permanencia. Exportación a CSV/Excel. \\
+        \hline
+        \texttt{pages/admin.py} & Panel administrativo para gestión de usuarios, andenes, cámaras y backups de base de datos. \\
+        \hline
+    \end{tabularx}
+    \caption{Descripción de los componentes del sistema}
+\end{table}
+
+\subsection{Base de Datos}
+
+El sistema utiliza PostgreSQL con las siguientes tablas principales:
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Tabla} & \textbf{Descripción} \\
+        \hline
+        \texttt{turnos} & Turnos de trabajo (Matutino, Vespertino, Nocturno) \\
+        \hline
+        \texttt{usuarios} & Usuarios del sistema con roles y credenciales \\
+        \hline
+        \texttt{andenes} & Catálogo de 100 andenes con estado y zona \\
+        \hline
+        \texttt{camaras} & Cámaras de vigilancia asociadas a andenes \\
+        \hline
+        \texttt{registros\_vehiculos} & Registro de entrada/salida (tabla particionada por año) \\
+        \hline
+        \texttt{estancias\_vehiculos} & Historial de estancias con duración calculada \\
+        \hline
+        \texttt{productos} & Catálogo de productos para carga/descarga \\
+        \hline
+        \texttt{carga\_descarga\_productos} & Movimientos de productos por estancia \\
+        \hline
+        \texttt{bitacora\_acciones} & Log de auditoría de acciones de usuario \\
+        \hline
+    \end{tabularx}
+    \caption{Tablas principales de la base de datos}
+\end{table}
+
+% ============================================================================
+% 4. FUNCIONALIDADES
+% ============================================================================
+\section{Funcionalidades del Sistema}
+
+\subsection{Dashboard en Tiempo Real}
+
+El dashboard principal proporciona una vista general del centro de distribución:
+
+\begin{itemize}
+    \item \textbf{KPIs Principales}:
+    \begin{itemize}
+        \item Total de andenes (100)
+        \item Andenes ocupados / libres
+        \item Vehículos ingresados hoy
+        \item Tiempo promedio de estancia
+    \end{itemize}
+    
+    \item \textbf{Mapa de Andenes}: Grid visual de 10x10 mostrando el estado de cada andén:
+    \begin{itemize}
+        \item[\textcolor{success}{\faIcon{circle}}] Verde: Libre
+        \item[\textcolor{danger}{\faIcon{circle}}] Rojo: Ocupado
+        \item[\textcolor{warning}{\faIcon{circle}}] Amarillo: En mantenimiento
+        \item[\faIcon{circle}] Negro: Bloqueado
+    \end{itemize}
+    
+    \item \textbf{Auto-refresh}: Actualización automática cada 5 segundos
+    
+    \item \textbf{Lista de Vehículos Activos}: Tabla con vehículos actualmente en andenes
+\end{itemize}
+
+\subsection{Registro Manual de Vehículos}
+
+Permite el registro manual de entrada y salida de vehículos:
+
+\subsubsection{Registro de Entrada}
+
+\begin{enumerate}
+    \item Ingresar la placa del vehículo (formato mexicano)
+    \item Seleccionar el andén de destino (solo andenes libres)
+    \item Seleccionar el tipo de vehículo:
+    \begin{itemize}
+        \item TORTON
+        \item RABÓN
+        \item FULL
+        \item CAMIONETA
+    \end{itemize}
+    \item Opcionalmente ingresar nombre del transportista
+    \item Confirmar el registro
+\end{enumerate}
+
+\subsubsection{Registro de Salida}
+
+\begin{enumerate}
+    \item Seleccionar el vehículo activo a dar salida
+    \item Agregar observaciones (opcional)
+    \item Confirmar la salida
+\end{enumerate}
+
+\subsection{Reportes y Análisis}
+
+El sistema genera los siguientes tipos de reportes:
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Reporte} & \textbf{Descripción} \\
+        \hline
+        Flujo por Hora & Análisis del flujo de vehículos por hora del día. Gráficos de líneas mostrando entradas y salidas. \\
+        \hline
+        Eficiencia de Andenes & Métricas por andén: operaciones totales, tiempo promedio, mínimo, máximo y mediana. \\
+        \hline
+        Tiempos de Permanencia & Distribución de tiempos de estancia. Histogramas y estadísticas descriptivas. \\
+        \hline
+        Productos Más Movidos & Ranking de productos con mayor movimiento de carga/descarga. \\
+        \hline
+    \end{tabularx}
+    \caption{Tipos de reportes disponibles}
+\end{table}
+
+\textbf{Exportación}: Todos los reportes pueden exportarse en formato CSV o Excel.
+
+\subsection{Administración del Sistema}
+
+El panel de administración (solo para rol ADMIN) permite:
+
+\subsubsection{Gestión de Usuarios}
+
+\begin{itemize}
+    \item Ver listado de usuarios con estado y último acceso
+    \item Crear nuevos usuarios con roles asignados
+    \item Activar/desactivar usuarios
+    \item Cambiar contraseñas
+\end{itemize}
+
+\subsubsection{Gestión de Andenes}
+
+\begin{itemize}
+    \item Ver estado de todos los andenes
+    \item Cambiar estado manualmente (LIBRE, OCUPADO, MANTENIMIENTO, BLOQUEADO)
+    \item Filtrar por zona
+\end{itemize}
+
+\subsubsection{Gestión de Cámaras}
+
+\begin{itemize}
+    \item Listado de cámaras instaladas
+    \item Agregar nuevas cámaras
+    \item Modificar configuración (IP, modelo, estado)
+    \item Eliminar cámaras
+\end{itemize}
+
+\subsubsection{Backups}
+
+\begin{itemize}
+    \item Generar backup de la base de datos
+    \item Descargar archivos de respaldo
+\end{itemize}
+
+% ============================================================================
+% 5. ROLES Y PERMISOS
+% ============================================================================
+\section{Roles y Permisos}
+
+El sistema implementa control de acceso basado en roles (RBAC):
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \textbf{Rol} & \textbf{Dashboard} & \textbf{Registro} & \textbf{Reportes} & \textbf{Admin} \\
+        \hline
+        ADMIN & \checkmark & \checkmark & \checkmark & \checkmark \\
+        \hline
+        SUPERVISOR & \checkmark & \checkmark & \checkmark & $\times$ \\
+        \hline
+        OPERADOR & \checkmark (solo lectura) & $\times$ & $\times$ & $\times$ \\
+        \hline
+    \end{tabular}
+    \caption{Matriz de permisos por rol}
+\end{table}
+
+\subsection{Seguridad}
+
+\begin{itemize}
+    \item \textbf{Contraseñas}: Almacenadas con hash bcrypt (12 rounds)
+    \item \textbf{Sesiones}: Manejadas con \texttt{st.session\_state}
+    \item \textbf{Intentos fallidos}: Máximo 5 intentos antes de bloqueo temporal
+    \item \textbf{Validación}: Control de permisos en cada operación
+\end{itemize}
+
+% ============================================================================
+% 6. CONFIGURACIÓN
+% ============================================================================
+\section{Configuración}
+
+\subsection{Archivo config.yaml}
+
+\begin{lstlisting}[style=yaml]
+# Configuracion de Base de Datos
+database:
+  host: "localhost"
+  port: 5432
+  name: "cambus_db"
+  user: "postgres"
+  password: ""  # Usar variable de entorno
+
+# Configuracion del Dashboard
+dashboard:
+  refresh_interval: 5
+  total_andenes: 100
+  grid_columns: 10
+  grid_rows: 10
+
+# Estados de Andenes
+andenes:
+  estados:
+    LIBRE: "verde"
+    OCUPADO: "rojo"
+    MANTENIMIENTO: "amarillo"
+    BLOQUEADO: "negro"
+\end{lstlisting}
+
+\subsection{Variables de Entorno}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Variable} & \textbf{Descripción} & \textbf{Default} \\
+        \hline
+        \texttt{DB\_PASSWORD} & Contraseña de PostgreSQL & - \\
+        \hline
+        \texttt{DB\_HOST} & Host de PostgreSQL & localhost \\
+        \hline
+        \texttt{DB\_PORT} & Puerto de PostgreSQL & 5432 \\
+        \hline
+        \texttt{DB\_NAME} & Nombre de la base de datos & cambus\_db \\
+        \hline
+        \texttt{DB\_USER} & Usuario de PostgreSQL & postgres \\
+        \hline
+    \end{tabular}
+    \caption{Variables de entorno del sistema}
+\end{table}
+
+% ============================================================================
+% 7. COMANDOS ÚTILES
+% ============================================================================
+\section{Comandos Útiles}
+
+\subsection{Desarrollo}
+
+\begin{lstlisting}[style=bash]
+# Ejecutar con auto-reload
+streamlit run app.py --server.runOnSave true
+
+# Ejecutar en puerto especifico
+streamlit run app.py --server.port 8080
+
+# Modo debug
+streamlit run app.py --logger.level debug
+\end{lstlisting}
+
+\subsection{Base de Datos}
+
+\begin{lstlisting}[style=bash]
+# Generar backup
+pg_dump -h localhost -U postgres cambus_db > backup.sql
+
+# Restaurar backup
+psql -h localhost -U postgres cambus_db < backup.sql
+
+# Conectar a la base de datos
+psql -h localhost -U postgres -d cambus_db
+\end{lstlisting}
+
+\subsection{Docker}
+
+\begin{lstlisting}[style=bash]
+# Construir imagen
+docker-compose build
+
+# Iniciar servicios
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f cambus-app
+
+# Detener servicios
+docker-compose down
+
+# Reiniciar aplicacion
+docker-compose restart cambus-app
+
+# Incluir Adminer
+docker-compose --profile tools up -d
+\end{lstlisting}
+
+% ============================================================================
+% 8. SOLUCIÓN DE PROBLEMAS
+% ============================================================================
+\section{Solución de Problemas}
+
+\subsection{Errores Comunes}
+
+\begin{table}[H]
+    \centering
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \hline
+        \textbf{Error} & \textbf{Solución} \\
+        \hline
+        ``Connection refused'' a PostgreSQL & Verificar que el servicio PostgreSQL está corriendo: \texttt{sudo systemctl status postgresql} \\
+        \hline
+        ``ModuleNotFoundError'' & Activar el entorno virtual: \texttt{source venv/bin/activate} \\
+        \hline
+        ``Permission denied'' en puerto 8501 & Usar un puerto diferente o ejecutar con permisos elevados \\
+        \hline
+        Error de autenticación BD & Verificar credenciales en \texttt{.env} y permisos del usuario PostgreSQL \\
+        \hline
+    \end{tabularx}
+    \caption{Errores comunes y soluciones}
+\end{table}
+
+\subsection{Verificación de Servicios}
+
+\begin{lstlisting}[style=bash]
+# Verificar PostgreSQL
+sudo systemctl status postgresql
+psql -U postgres -c "SELECT 1;"
+
+# Verificar puerto disponible
+lsof -i :8501
+
+# Verificar conexion a base de datos
+python -c "from utils.db import test_connection; print(test_connection())"
+\end{lstlisting}
+
+% ============================================================================
+% APÉNDICE
+% ============================================================================
+\appendix
+
+\section{Dependencias de Python}
+
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+# Framework Web
+streamlit>=1.28.0
+
+# Base de Datos
+psycopg2-binary>=2.9.9
+sqlalchemy>=2.0.0
+
+# Procesamiento de Datos
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualizacion
+plotly>=5.17.0
+
+# Autenticacion y Seguridad
+bcrypt>=4.0.0
+
+# Configuracion
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+
+# Exportacion de Reportes
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
+\end{lstlisting}
+
+% ============================================================================
+% FIN DEL DOCUMENTO
+% ============================================================================
+
+\vfill
+
+\begin{center}
+    \rule{0.5\textwidth}{0.5pt}\\[0.5cm]
+    {\large\textbf{CamBus - Control de Acceso Vehicular}}\\
+    {\small Centro de Distribución Mabe SLP}\\[0.3cm]
+    {\small © 2024-2026 CamBus Team}
+\end{center}
+
+\end{document}

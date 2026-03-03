@@ -1,0 +1,77 @@
+# ============================================================================
+# CamBus - Configuración de la Aplicación
+# Centro de Distribución Mabe SLP
+# ============================================================================
+
+# Configuración de Base de Datos PostgreSQL
+database:
+  host: "localhost"
+  port: 5432
+  name: "cambus_db"
+  user: "postgres"
+  password: ""  # Configurar en variable de entorno DB_PASSWORD
+
+# Configuración de la Aplicación
+app:
+  title: "🚛 CamBus - Control de Acceso Vehicular"
+  subtitle: "Centro de Distribución Mabe SLP"
+  layout: "wide"
+  theme: "dark"
+  
+# Configuración del Dashboard
+dashboard:
+  refresh_interval: 5  # Segundos para auto-refresh
+  total_andenes: 100
+  grid_columns: 10
+  grid_rows: 10
+
+# Configuración de Andenes
+andenes:
+  estados:
+    LIBRE: "🟢"
+    OCUPADO: "🔴"
+    MANTENIMIENTO: "🟡"
+    BLOQUEADO: "⚫"
+  colores:
+    LIBRE: "#00FF00"
+    OCUPADO: "#FF0000"
+    MANTENIMIENTO: "#FFFF00"
+    BLOQUEADO: "#000000"
+
+# Tipos de Vehículos
+vehiculos:
+  tipos:
+    - "TORTON"
+    - "RABON"
+    - "FULL"
+    - "CAMIONETA"
+
+# Roles de Usuario
+roles:
+  ADMIN:
+    - "Dashboard"
+    - "Registro Manual"
+    - "Reportes"
+    - "Administración"
+  SUPERVISOR:
+    - "Dashboard"
+    - "Registro Manual"
+    - "Reportes"
+  OPERADOR:
+    - "Dashboard"
+
+# Configuración de Seguridad
+security:
+  session_timeout: 3600  # Segundos (1 hora)
+  max_login_attempts: 5
+  bcrypt_rounds: 12
+
+# Configuración de Reportes
+reportes:
+  tipos:
+    - "Flujo por hora"
+    - "Eficiencia de andenes"
+    - "Tiempos de permanencia"
+    - "Productos más movidos"
+  formato_fecha: "%Y-%m-%d"
+  formato_hora: "%H:%M:%S"

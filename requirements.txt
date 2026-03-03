@@ -1,0 +1,32 @@
+# ============================================================================
+# CamBus - Dependencias de la Aplicación
+# Centro de Distribución Mabe SLP
+# ============================================================================
+
+# Framework Web
+streamlit>=1.28.0
+
+# Base de Datos
+psycopg2-binary>=2.9.9
+sqlalchemy>=2.0.0
+
+# Procesamiento de Datos
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualización
+plotly>=5.17.0
+
+# Autenticación y Seguridad
+bcrypt>=4.0.0
+
+# Configuración
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+
+# Utilidades
+watchdog>=3.0.0
+
+# Exportación de Reportes
+openpyxl>=3.1.0
+xlsxwriter>=3.1.0
