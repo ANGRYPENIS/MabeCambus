@@ -251,6 +251,7 @@ Si los comandos `pg_dump` y `psql` no funcionan, agrega la ruta de PostgreSQL a 
 | Documento | Descripción |
 |-----------|------------|
 | **[GITHUB_SETUP.md](GITHUB_SETUP.md)** | Crear repositorio en GitHub y sincronizar proyecto |
-| **[SCRIPTS_UTILIDAD.md](SCRIPTS_UTILIDAD.md)** | Guía de los scripts (`setup.bat`, `run.bat`, `update.bat`, `clean.bat`) |
+| **[GIT_TROUBLESHOOTING.md](GIT_TROUBLESHOOTING.md)** | Solución a errores comunes de Git (non-fast-forward, merge conflicts, etc.) |
+| **[SCRIPTS_UTILIDAD.md](SCRIPTS_UTILIDAD.md)** | Guía de los scripts (`setup.bat`, `run.bat`, `update.bat`, `clean.bat`, `push.bat`) |
 | **[POSTGRESQL_WINDOWS.md](POSTGRESQL_WINDOWS.md)** | Instalación de PostgreSQL en Windows paso a paso |
 | **[TROUBLESHOOTING_WINDOWS.md](TROUBLESHOOTING_WINDOWS.md)** | Solución de problemas comunes en Windows |
