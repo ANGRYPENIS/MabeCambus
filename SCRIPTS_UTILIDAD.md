@@ -175,6 +175,50 @@ streamlit run app.py --server.port 8502
 
 ---
 
+### 6. **Check PostgreSQL** - Verificar Instalación de PostgreSQL (NUEVO)
+
+#### Windows
+```cmd
+check-postgres.bat
+```
+
+#### Linux/Mac
+```bash
+./check-postgres.sh
+```
+
+**¿Qué hace?**
+- ✅ Verifica si PostgreSQL está en PATH
+- ✅ Busca los servicios de PostgreSQL
+- ✅ Verifica si está corriendo
+- ✅ Intenta conectar a la base de datos
+- ✅ Proporciona soluciones si hay problemas
+
+**Cuándo ejecutar:**
+- Antes de usar la app (para verificar que PostgreSQL funciona)
+- Cuando hay problemas de conexión a BD
+- Para diagnosticar problemas
+
+**Ejemplo de salida:**
+
+```
+[1/4] Verificando si psql está en PATH...
+[✓] PostgreSQL 16.0 encontrado
+
+[2/4] Verificando servicio...
+[✓] PostgreSQL está CORRIENDO
+
+[3/4] Verificando carpeta de instalación...
+[✓] Carpeta encontrada: C:\Program Files\PostgreSQL\16
+
+[4/4] Intentando conectar...
+[✓] Conexión exitosa a PostgreSQL
+
+[SUCCESS] PostgreSQL está instalado y funcionando correctamente
+```
+
+---
+
 ## ⚠️ Problema: "Permission Denied" (Linux/Mac)
 
 Si al ejecutar `./setup.sh` ves un error de permisos:

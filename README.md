@@ -13,34 +13,51 @@ CamBus es una aplicación web desarrollada con Streamlit que permite:
 
 ## 🛠️ Requisitos
 
-- **Python 3.9+** - Descargar desde [python.org](https://python.org)
-- **PostgreSQL 12+** - Descargar desde [postgresql.org](https://www.postgresql.org/download/windows/)
-  - Durante la instalación, recuerda la contraseña del usuario `postgres`
-  - Asegúrate que PostgreSQL corra en puerto `5432`
-- **Git** (opcional) - Para clonar el repositorio
-- **Docker** (opcional) - Para despliegue con contenedores (requiere Docker Desktop)
+- Python 3.9+
+- PostgreSQL 12+
+- Docker (opcional, para despliegue con contenedores)
 
 ## 📦 Instalación
 
-### ⚡ Instalación Rápida (Recomendado)
+### ⭐ Opción 1: Instalación Rápida con Scripts (Recomendado)
 
-#### Windows:
+La forma más fácil para usuarios de Windows/Linux/Mac. Los scripts automatizan todo el proceso.
+
+#### Windows
+
 ```bash
-# Doble-clic en setup.bat
-# O abre CMD/PowerShell en la carpeta del proyecto y ejecuta:
+# 1. Configurar base de datos (crea .env automáticamente)
+configure-db.bat
+
+# 2. Instalar dependencias Python
 setup.bat
+
+# 3. Ejecutar la aplicación
+run.bat
 ```
 
-#### Linux/Mac:
+#### Linux / macOS
+
 ```bash
-# Ejecutar el script
+# 1. Configurar base de datos (crea .env automáticamente)
+./configure-db.sh
+
+# 2. Instalar dependencias Python
 ./setup.sh
+
+# 3. Ejecutar la aplicación
+./run.sh
 ```
 
-Los scripts verificarán todo (Python, PostgreSQL) e instalarán automáticamente.  
-Luego solo necesitas editar `.env` con tus credenciales de BD.
+**La aplicación estará disponible en** `http://localhost:8501`
 
-### Opción 1: Instalación Manual en Local
+**Login con cuenta demo:**
+- Usuario: `demo`
+- Contraseña: `demo_password`
+
+[Guía detallada de configuración](DATABASE_SETUP.md)
+
+### Opción 2: Instalación Manual
 
 1. **Clonar o copiar el proyecto**
 
@@ -66,21 +83,8 @@ pip install -r requirements.txt
 4. **Configurar variables de entorno**
 
 ```bash
-# Linux/Mac:
 cp .env.example .env
-
-# Windows (PowerShell):
-Copy-Item .env.example .env
-
-# Windows (CMD):
-copy .env.example .env
-```
-
-Edita el archivo `.env` con tus credenciales de base de datos:
-```
-DB_PASSWORD=tu_contraseña
-DB_HOST=localhost
-DB_PORT=5432
+# Editar .env con tus credenciales de base de datos
 ```
 
 5. **Ejecutar la aplicación**
@@ -89,11 +93,9 @@ DB_PORT=5432
 streamlit run app.py
 ```
 
-La aplicación abrirá automáticamente en `http://localhost:8501`
-
 La aplicación estará disponible en `http://localhost:8501`
 
-### Opción 2: Despliegue con Docker
+### Opción 3: Despliegue con Docker
 
 1. **Construir y ejecutar con Docker Compose**
 
@@ -110,6 +112,22 @@ docker-compose --profile tools up -d
 La aplicación estará disponible en:
 - CamBus: `http://localhost:8501`
 - Adminer (opcional): `http://localhost:8080`
+
+## 📊 Utilidades y Scripts
+
+Además de los scripts de instalación, incluyen herramientas útiles:
+
+| Script | Plataforma | Descripción |
+|--------|-----------|-------------|
+| `configure-db` | Win/Lin/Mac | 🗄️ Configurar base de datos (crear o usar existente) |
+| `setup` | Win/Lin/Mac | 📦 Instalar dependencias Python |
+| `run` | Win/Lin/Mac | ▶️ Ejecutar la aplicación |
+| `update` | Win/Lin/Mac | 🔄 Actualizar dependencias |
+| `clean` | Win/Lin/Mac | 🧹 Limpiar archivos temporales y cache |
+| `push` | Win/Lin/Mac | 📤 Subir cambios a GitHub |
+| `check-postgres` | Win/Lin/Mac | ✅ Verificar instalación de PostgreSQL |
+
+**Ver:** [Scripts Útiles](SCRIPTS_UTILIDAD.md)
 
 ## 🗄️ Base de Datos
 
@@ -143,18 +161,6 @@ La aplicación espera las siguientes tablas en PostgreSQL:
 
 ```
 cambus/
-├── .git/                  # (Automático) Repositorio Git
-├── .gitignore             # Archivos a ignorar en Git
-├── setup.bat              # Instalación rápida (Windows)
-├── setup.sh               # Instalación rápida (Linux/Mac)
-├── run.bat                # Ejecutar la app (Windows)
-├── run.sh                 # Ejecutar la app (Linux/Mac)
-├── update.bat             # Actualizar (Windows)
-├── update.sh              # Actualizar (Linux/Mac)
-├── clean.bat              # Limpiar caché (Windows)
-├── clean.sh               # Limpiar caché (Linux/Mac)
-├── push.bat               # Commit + Push a GitHub (Windows)
-├── push.sh                # Commit + Push a GitHub (Linux/Mac)
 ├── app.py                 # Aplicación principal
 ├── config.yaml            # Configuración
 ├── requirements.txt       # Dependencias
@@ -214,28 +220,14 @@ database:
 # Ejecutar en modo desarrollo con auto-reload
 streamlit run app.py --server.runOnSave true
 
-# Ejecutar tests (si existen)
+# Ejecutar tests
 pytest tests/
 
 # Generar backup de base de datos
-# Windows (PowerShell o CMD con pg_dump en PATH):
-pg_dump -h localhost -U postgres cambus_db > backup.sql
-
-# Linux/Mac:
 pg_dump -h localhost -U postgres cambus_db > backup.sql
 
 # Restaurar backup
-# Windows:
 psql -h localhost -U postgres cambus_db < backup.sql
-
-# Linux/Mac:
-psql -h localhost -U postgres cambus_db < backup.sql
-```
-
-### ⚠️ Nota para Windows: 
-Si los comandos `pg_dump` y `psql` no funcionan, agrega la ruta de PostgreSQL a las variables de entorno del sistema, o usa la ruta completa:
-```
-"C:\Program Files\PostgreSQL\16\bin\pg_dump.exe" -h localhost -U postgres cambus_db > backup.sql
 ```
 
 ## 📄 Licencia
@@ -245,13 +237,3 @@ Si los comandos `pg_dump` y `psql` no funcionan, agrega la ruta de PostgreSQL a 
 ---
 
 **Desarrollado con ❤️ usando Streamlit**
-
-## 📚 Documentación Complementaria
-
-| Documento | Descripción |
-|-----------|------------|
-| **[GITHUB_SETUP.md](GITHUB_SETUP.md)** | Crear repositorio en GitHub y sincronizar proyecto |
-| **[GIT_TROUBLESHOOTING.md](GIT_TROUBLESHOOTING.md)** | Solución a errores comunes de Git (non-fast-forward, merge conflicts, etc.) |
-| **[SCRIPTS_UTILIDAD.md](SCRIPTS_UTILIDAD.md)** | Guía de los scripts (`setup.bat`, `run.bat`, `update.bat`, `clean.bat`, `push.bat`) |
-| **[POSTGRESQL_WINDOWS.md](POSTGRESQL_WINDOWS.md)** | Instalación de PostgreSQL en Windows paso a paso |
-| **[TROUBLESHOOTING_WINDOWS.md](TROUBLESHOOTING_WINDOWS.md)** | Solución de problemas comunes en Windows |
